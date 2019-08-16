@@ -1,7 +1,9 @@
 # TodoApp
 
-Commit 1
-Added all the pages needed = main activity (home) and add a todo page
+1. Set up project in Android Studio with Kotlin
 
-Commit 2
-Linked the home page to the add a todo page through the floating action button
+2. Added the 2 pages I need: Home/List of todos (has a list where the created todos will go) and add todo page (title and importance)
+
+3. Changed add todo page to an alert dialog on the home screen instead of having as a whole separte screen
+
+4. 
