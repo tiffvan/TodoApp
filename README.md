@@ -1,9 +1,13 @@
-# TodoApp
+# Todoaholic
 
-1. Set up project in Android Studio with Kotlin
+This app provides a person a place to input tasks that they want to do at some point and mark them off, helping them not to forget all of them.
 
-2. Added the 2 pages I need: Home/List of todos (has a list where the created todos will go) and add todo page (title and importance)
+The process I took of making the app:
+#1 Creating a basic Kotlin project in Android Studio
+#2 Creating all the necessary files that I would need
+#3 Creating an alert dialog where a person can enter the task that they need todo
+#4 Created a list item on the main page
+#5 Adding the todo items to the list using Sqlite database
+#6 Changed the styling of the app to make it look more appealing
 
-3. Changed add todo page to an alert dialog on the home screen instead of having as a whole separte screen
-
-4. 
+I think this app is successful because it achieves the task that it was created to do.
