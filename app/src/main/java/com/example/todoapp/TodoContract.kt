@@ -2,13 +2,13 @@ package com.todoapp.todo.db
 
 import android.provider.BaseColumns
 
-class TaskContract {
+class TodoContract {
     companion object {
         val DB_NAME = "com.todoapp.todo.db"
         val DB_VERSION = 1
     }
 
-    class TaskEntry : BaseColumns {
+    class TodoEntry : BaseColumns {
 
         companion object {
             val TABLE = "todo"

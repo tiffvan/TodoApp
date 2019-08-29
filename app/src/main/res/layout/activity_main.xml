@@ -5,6 +5,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@drawable/background"
         tools:context=".MainActivity">
 
     <android.support.design.widget.AppBarLayout
@@ -24,13 +25,18 @@
 
     <include layout="@layout/content_main"/>
 
-    <android.support.design.widget.FloatingActionButton
+    <ImageButton
             android:id="@+id/fabOpenAppTodo"
+            android:src="@drawable/ic_new"
+            android:backgroundTint="@android:color/transparent"
+            android:minHeight="60dp"
+            android:minWidth="60dp"
             android:layout_width="wrap_content"
+            android:layout_marginRight="15dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
-            android:layout_margin="@dimen/fab_margin"
-            android:onClick="alertDialog"
-            app:srcCompat="@drawable/ic_add"/>
+            android:onClick="alertDialog"/>
 
 </android.support.design.widget.CoordinatorLayout>

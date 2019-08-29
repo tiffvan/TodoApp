@@ -11,7 +11,8 @@ import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.EditText
 import android.widget.ListView
-import com.todoapp.todo.db.TaskContract
+import android.widget.TextView
+import com.todoapp.todo.db.TodoContract
 import com.todoapp.todo.db.Database
 
 class MainActivity : AppCompatActivity() {
@@ -31,14 +32,26 @@ class MainActivity : AppCompatActivity() {
         updateUI()
     }
 
+    fun doneTodo(view: View) {
+        val parent = view.getParent() as View
+        val todoTextView = parent.findViewById<TextView>(R.id.todo_title)
+        val task = todoTextView.text.toString()
+        val db = mHelper.writableDatabase
+        db.delete(TodoContract.TodoEntry.TABLE,
+            TodoContract.TodoEntry.COL_TODO_TITLE + " = ?",
+            arrayOf(task))
+        db.close()
+        updateUI()
+    }
+
     private fun updateUI() {
         val taskList = ArrayList<String>()
         val db = mHelper.readableDatabase
         val cursor = db.query(
-            TaskContract.TaskEntry.TABLE,
-            arrayOf(TaskContract.TaskEntry._ID, TaskContract.TaskEntry.COL_TODO_TITLE), null, null, null, null, null)
+            TodoContract.TodoEntry.TABLE,
+            arrayOf(TodoContract.TodoEntry._ID, TodoContract.TodoEntry.COL_TODO_TITLE), null, null, null, null, null)
         while (cursor.moveToNext()) {
-            val idx = cursor.getColumnIndex(TaskContract.TaskEntry.COL_TODO_TITLE)
+            val idx = cursor.getColumnIndex(TodoContract.TodoEntry.COL_TODO_TITLE)
             taskList.add(cursor.getString(idx))
         }
 
@@ -68,8 +81,8 @@ class MainActivity : AppCompatActivity() {
                 val todo = taskEditText.text.toString()
                 val db = mHelper.getWritableDatabase()
                 val values = ContentValues()
-                values.put(TaskContract.TaskEntry.COL_TODO_TITLE, todo)
-                db.insertWithOnConflict(TaskContract.TaskEntry.TABLE,
+                values.put(TodoContract.TodoEntry.COL_TODO_TITLE, todo)
+                db.insertWithOnConflict(TodoContract.TodoEntry.TABLE,
                     null,
                     values,
                     SQLiteDatabase.CONFLICT_REPLACE)
