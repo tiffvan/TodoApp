@@ -2,7 +2,7 @@ package com.todoapp.todo.db
 
 import android.provider.BaseColumns
 
-class TodoContract {
+class Todo {
     companion object {
         val DB_NAME = "com.todoapp.todo.db"
         val DB_VERSION = 1

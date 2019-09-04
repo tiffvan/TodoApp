@@ -12,59 +12,59 @@ import android.widget.ArrayAdapter
 import android.widget.EditText
 import android.widget.ListView
 import android.widget.TextView
-import com.todoapp.todo.db.TodoContract
+import com.todoapp.todo.db.Todo
 import com.todoapp.todo.db.Database
 
 class MainActivity : AppCompatActivity() {
 
-    private val TAG = "MainActivity"
-    private lateinit var mHelper: Database
-    private lateinit var mTodoListView: ListView
-    private var mAdapter: ArrayAdapter<String>? = null
+    private val MAIN = "MainActivity"
+    private lateinit var helper: Database
+    private lateinit var todoListView: ListView
+    private var adapter: ArrayAdapter<String>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        mTodoListView = findViewById(R.id.list_todo)
+        todoListView = findViewById(R.id.list_todo)
 
-        mHelper = Database(this)
-        updateUI()
+        helper = Database(this)
+        updatePage()
     }
 
     fun doneTodo(view: View) {
         val parent = view.getParent() as View
         val todoTextView = parent.findViewById<TextView>(R.id.todo_title)
         val task = todoTextView.text.toString()
-        val db = mHelper.writableDatabase
-        db.delete(TodoContract.TodoEntry.TABLE,
-            TodoContract.TodoEntry.COL_TODO_TITLE + " = ?",
+        val db = helper.writableDatabase
+        db.delete(Todo.TodoEntry.TABLE,
+            Todo.TodoEntry.COL_TODO_TITLE + " = ?",
             arrayOf(task))
         db.close()
-        updateUI()
+        updatePage()
     }
 
-    private fun updateUI() {
-        val taskList = ArrayList<String>()
-        val db = mHelper.readableDatabase
+    private fun updatePage() {
+        val todoList = ArrayList<String>()
+        val db = helper.readableDatabase
         val cursor = db.query(
-            TodoContract.TodoEntry.TABLE,
-            arrayOf(TodoContract.TodoEntry._ID, TodoContract.TodoEntry.COL_TODO_TITLE), null, null, null, null, null)
+            Todo.TodoEntry.TABLE,
+            arrayOf(Todo.TodoEntry._ID, Todo.TodoEntry.COL_TODO_TITLE), null, null, null, null, null)
         while (cursor.moveToNext()) {
-            val idx = cursor.getColumnIndex(TodoContract.TodoEntry.COL_TODO_TITLE)
-            taskList.add(cursor.getString(idx))
+            val idx = cursor.getColumnIndex(Todo.TodoEntry.COL_TODO_TITLE)
+            todoList.add(cursor.getString(idx))
         }
 
-        if (mAdapter == null) {
-            mAdapter = ArrayAdapter(this,
+        if (adapter == null) {
+            adapter = ArrayAdapter(this,
                 R.layout.todo_list_item,
                 R.id.todo_title,
-                taskList)
-            mTodoListView.adapter = mAdapter
+                todoList)
+            todoListView.adapter = adapter
         } else {
-            mAdapter?.clear()
-            mAdapter?.addAll(taskList)
-            mAdapter?.notifyDataSetChanged()
+            adapter?.clear()
+            adapter?.addAll(todoList)
+            adapter?.notifyDataSetChanged()
         }
 
         cursor.close()
@@ -73,23 +73,23 @@ class MainActivity : AppCompatActivity() {
 
     //ALERT DIALOG
     fun alertDialog(view: View) {
-        val taskEditText = EditText(this)
+        val todoEditText = EditText(this)
         val dialog = AlertDialog.Builder(this)
             .setTitle("Add a new todo")
-            .setView(taskEditText)
+            .setView(todoEditText)
             .setPositiveButton("Add", DialogInterface.OnClickListener { dialog, which ->
-                val todo = taskEditText.text.toString()
-                val db = mHelper.getWritableDatabase()
+                val todo = todoEditText.text.toString()
+                val db = helper.getWritableDatabase()
                 val values = ContentValues()
-                values.put(TodoContract.TodoEntry.COL_TODO_TITLE, todo)
-                db.insertWithOnConflict(TodoContract.TodoEntry.TABLE,
+                values.put(Todo.TodoEntry.COL_TODO_TITLE, todo)
+                db.insertWithOnConflict(Todo.TodoEntry.TABLE,
                     null,
                     values,
                     SQLiteDatabase.CONFLICT_REPLACE)
                 db.close()
 
-                Log.d(TAG, "Todo to add: " + todo)
-                updateUI()
+                Log.d(MAIN, "Todo to add: " + todo)
+                updatePage()
             })
             .setNegativeButton("Cancel", null)
             .create()
